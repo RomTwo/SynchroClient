@@ -51,12 +51,13 @@ bool Client::existProfil(const string& name){
     
     cout << "Le dossier existe bien.\nRecherche du fichier en cours" << endl;
     while ((entry = readdir(dir)) != NULL) {
-        if((entry->d_name) == name){
+        string file = entry->d_name;
+        string rawname = file.substr(0, file.find_last_of("."));
+        if(rawname == name){
             reponse = true;
         }else{
             reponse = false;
         }
-        printf ("%s\n", entry->d_name);
     }
     closedir (dir);
     return reponse;
