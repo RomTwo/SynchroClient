@@ -5,8 +5,8 @@ DOC_DIR = doc
 
 all: compile
 
-compile: src/Client.cpp
-	$(CC) src/Client.cpp -o src/client
+compile: src/Client.cpp src/Profil.cpp
+	$(CC) src/Client.cpp src/Profil.cpp -o src/client
 
 executable:
 	@echo "-----Archivage en cours...-----"

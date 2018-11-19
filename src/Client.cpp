@@ -20,12 +20,43 @@ Client::Client(){
     
 }
 
-void Client::createProfil(const string& name){
+void Client::createProfil(const string& name, const string& ip){
+    string sourceRepository, remoteRepository, extension, archivable, iPSource;
     cout << "createProfil avec le nom " << name << endl;
     if(this->existProfil(name)){
-        cout << "Yes" << endl;
+        cout << "Désolé, le nom de profil donné existe déjà..." << endl;
     }else{
-        cout << "Nop" << endl;
+        cout << "La création du fichier est en cours" << endl;
+        Profil p(name, ip);
+        p.createFile(name, ip);
+        cout << "La création du fichier est terminée" << endl;
+        cout << "Veuillez saisir votre addresse IP : " << endl;
+        cin >> iPSource;
+        cout << "Veuillez saisir le répertoire de source : " << endl;
+        cin >> sourceRepository;
+        cout << "Veuillez saisir le répertoire destination : " << endl;
+        cin >> remoteRepository;
+        cout << "Veuillez saisir les extensions acceptées lors la synchronisatio. 'STOP' pour stopper : " << endl;
+        cin >> extension;
+        string array[100], array2[100];
+        int i = 0;
+        while((extension != "STOP") && (i < 100))
+        {
+            array[i] = extension;
+            i++;
+            cin >> extension;
+        }
+        cout << "Veuillez saisir les extensions archivables acceptées lors la synchronisation. 'STOP' pour stopper : " << endl;
+        cin >> archivable;
+        i = 0;
+        while((archivable != "STOP") && (i < 100))
+        {
+            array2[i] = archivable;
+            i++;
+            cin >> archivable;
+        }
+        cout << "Ajout des informations dans le fichier effectué." << endl;
+        p.addInformation(iPSource, sourceRepository, remoteRepository, array, array2);
     }
 }
 
@@ -67,9 +98,9 @@ int main() {
     string command = "", name, ip;
     Client client;
     while(command != "EXIT"){
-        cin >> command >> name;
+        cin >> command >> name >> ip;
         if(command == "CREATE"){
-            client.createProfil(name);
+            client.createProfil(name, ip);
         }else if(command == "EDIT"){
             client.editProfil();
         }else if(command == "LOAD"){
