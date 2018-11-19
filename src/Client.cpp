@@ -51,7 +51,6 @@ bool Client::existProfil(const string& name){
     
     cout << "Le dossier existe bien.\nRecherche du fichier en cours" << endl;
     while ((entry = readdir(dir)) != NULL) {
-        string fname = dirp->d_name;
         if((entry->d_name) == name){
             reponse = true;
         }else{
