@@ -8,72 +8,84 @@
 #include "Client.hpp"
 #include <iostream>
 #include <string>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
+#include <zconf.h>
+
+#define MYPORT "12345"
+
 using namespace std;
 
-enum Command{
+enum Command {
     CREATE,
     EDIT,
-    LOAD
+    LOAD,
+    BYE
 };
 
-Client::Client(){
-    
+Client::Client() {
+
 }
 
-void Client::createProfil(const string& name){
+void Client::createProfil(const string &name) {
     cout << "createProfil avec le nom " << name << endl;
-    if(this->existProfil(name)){
+    if (this->existProfil(name)) {
         cout << "Yes" << endl;
-    }else{
+    } else {
         cout << "Nop" << endl;
     }
 }
 
-void Client::editProfil(){
+void Client::editProfil() {
     cout << "editProfil\n";
 }
 
-void Client::loadProfil(){
+void Client::loadProfil() {
     cout << "loadProfil\n";
 }
 
-bool Client::existProfil(const string& name){
+bool Client::existProfil(const string &name) {
     DIR *dir;
     struct dirent *entry;
     struct stat info;
     bool reponse;
-    
+
     dir = opendir("../configuration");
-    if(!dir){
+    if (!dir) {
         cout << "Le dossier n'est pas existant" << endl;
         return false;
     }
-    
+
     cout << "Le dossier existe bien.\nRecherche du fichier en cours" << endl;
     while ((entry = readdir(dir)) != NULL) {
-        if((entry->d_name) == name){
+        if ((entry->d_name) == name) {
             reponse = true;
-        }else{
+        } else {
             reponse = false;
         }
-        printf ("%s\n", entry->d_name);
+        printf("%s\n", entry->d_name);
     }
-    closedir (dir);
+    closedir(dir);
     return reponse;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     string command = "", name, ip;
     Client client;
-    while(command != "EXIT"){
+    while (command != "EXIT") {
         cin >> command >> name;
-        if(command == "CREATE"){
+        if (command == "CREATE") {
             client.createProfil(name);
-        }else if(command == "EDIT"){
+        } else if (command == "EDIT") {
             client.editProfil();
-        }else if(command == "LOAD"){
+        } else if (command == "LOAD") {
             client.loadProfil();
-        }else{
+        } else if (command == "BYE") {
+
+        } else {
             cout << "Commande non existante" << endl;
         }
     }
