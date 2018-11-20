@@ -19,15 +19,22 @@ using namespace std;
 class Profil {
     string name;
     string ipSource;
-    string ipRemote;
+    string ipDestination;
+    string sourceRepository;
+    string remoteRepository;
+    vector<string> extensions;
+    vector<string> typeArchivable;
     string extension = ".txt";
-    ofstream profil;
+    fstream profil;
     
 public:
     Profil(const string& name, const string& ip);
+    Profil(const string& name);
     
     void createFile(const string& name, const string& ipRemote);
     void addInformation(const string& iPRemote, const string& sourceRepository, const string& remoteRepository, const vector<string>& extension, const vector<string>& typeArchivable);
+    void editProfil(const string& iPSource, const string& iPRemote, const string& sourceRepository, const string& remoteRepository, const vector<string>& extension, const vector<string>& typeArchivable);
+    void loadProfil();
 };
 
 #endif /* Profil_hpp */

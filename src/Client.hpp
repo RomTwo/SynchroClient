@@ -22,8 +22,8 @@ class Client {
 public:
     Client();
     void createProfil(const string& name, const string& ip);
-    void editProfil();
-    void loadProfil();
+    void editProfil(const string& name);
+    void loadProfil(const string& name);
     bool existProfil(const string& name);
 };
 
