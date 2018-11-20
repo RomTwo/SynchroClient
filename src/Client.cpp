@@ -39,25 +39,23 @@ void Client::createProfil(const string& name, const string& ip){
         cin >> remoteRepository;
         cout << "Veuillez saisir les extensions acceptées lors la synchronisatio. 'STOP' pour stopper : " << endl;
         cin >> extension;
-        string array[100], array2[100];
-        int i = 0;
-        while((extension != "STOP") && (i < 100))
+        vector<string> extensions;
+        while(extension != "STOP")
         {
-            array[i] = extension;
-            i++;
+            extensions.push_back(extension);
             cin >> extension;
         }
         cout << "Veuillez saisir les extensions archivables acceptées lors la synchronisation. 'STOP' pour stopper : " << endl;
         cin >> archivable;
-        i = 0;
-        while((archivable != "STOP") && (i < 100))
+        vector<string> typeArchivable;
+        while(archivable != "STOP")
         {
-            array2[i] = archivable;
-            i++;
+            typeArchivable.push_back(archivable);
             cin >> archivable;
         }
+        p.addInformation(iPSource, sourceRepository, remoteRepository, extensions, typeArchivable);
         cout << "Ajout des informations dans le fichier effectué." << endl;
-        p.addInformation(iPSource, sourceRepository, remoteRepository, array, array2);
+        
     }
 }
 
@@ -98,7 +96,7 @@ bool Client::existProfil(const string& name){
 int main() {
     string command = "", name, ip;
     Client client;
-    while(command != "EXIT"){
+    while(command != "BYE"){
         cin >> command >> name >> ip;
         if(command == "CREATE"){
             client.createProfil(name, ip);
@@ -106,10 +104,7 @@ int main() {
             client.editProfil();
         }else if(command == "LOAD"){
             client.loadProfil();
-        }else if(command == "BYE"){
-            return 0;
-        }
-        else{
+        }else{
             cout << "Commande non existante" << endl;
         }
     }

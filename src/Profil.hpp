@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
 #include <iostream>
 #include <fstream> 
 #include <list>
@@ -26,7 +27,7 @@ public:
     Profil(const string& name, const string& ip);
     
     void createFile(const string& name, const string& ipRemote);
-    void addInformation(const string& iPRemote, const string& sourceRepository, const string& remoteRepository, const string extension[], const string typeArchivable[]);
+    void addInformation(const string& iPRemote, const string& sourceRepository, const string& remoteRepository, const vector<string>& extension, const vector<string>& typeArchivable);
 };
 
 #endif /* Profil_hpp */
