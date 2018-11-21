@@ -123,7 +123,6 @@ bool Client::existProfil(const string& name){
     while ((entry = readdir(dir)) != NULL) {
         string file = entry->d_name;
         string rawname = file.substr(0, file.find_last_of("."));
-        cout << rawname << endl;
         if(rawname == name){
             return true;
         }else{
@@ -138,13 +137,20 @@ int main() {
     string command = "", name, ip;
     Client client;
     while(command != "BYE"){
-        cin >> command >> name >> ip;
+        //cin >> command >> name >> ip;
+        cin >> command;
         if(command == "CREATE"){
+            cin >> name >> ip;
             client.createProfil(name, ip);
         }else if(command == "EDIT"){
+            cin >> name >> ip;
             client.editProfil(name);
         }else if(command == "LOAD"){
+            cin >> name;
             client.loadProfil(name);
+        }else if(command == "BYE"){
+            cout << "Bonsoir !" << endl;
+            return 0;
         }else{
             cout << "Commande non existante" << endl;
         }
