@@ -133,6 +133,52 @@ bool Client::existProfil(const string& name){
     return reponse;
 }
 
+bool Client::parcourirDirectory(const string& chemin){
+    DIR *dir;
+    struct dirent *entry;
+    
+    stringstream ss1;
+    ss1 << chemin;
+    
+    dir = opendir(ss1.str().c_str());
+    
+    if(!dir){
+        cout << "Le dossier n'est pas existant" << endl;
+        return false;
+    }
+    while ((entry = readdir(dir)) != NULL) {
+        string nameFileFils = entry->d_name;
+        
+        if(nameFileFils.compare(".") ==0  || nameFileFils.compare("..") ==0 ){
+            
+        }else{
+            std::stringstream ssFinal;
+            ssFinal << chemin <<"/" <<nameFileFils;
+            
+            struct stat info;
+            stat(ssFinal.str().c_str(), &info);
+            
+            if(S_ISDIR(info.st_mode)){
+                string s = ssFinal.str();
+                
+                parcourirDirectory(s);
+                
+            }else{
+                time_t t = info.st_mtime;
+                struct tm lt;
+                localtime_r(&t, &lt);
+                char timbuf[80];
+                strftime(timbuf, sizeof(timbuf), "%b %d %R", &lt);
+                
+                cout << ssFinal.str().c_str() << " " << info.st_size<< " "<< timbuf << endl;
+            }
+            
+        }
+        
+    }
+    return true;
+}
+
 int main() {
     string command = "", name, ip;
     Client client;
@@ -155,5 +201,7 @@ int main() {
             cout << "Commande non existante" << endl;
         }
     }
+//    string chemin ="/Users/coussmax/Downloads";
+//    client.parcourirDirectory(chemin);
     return 0;
 }

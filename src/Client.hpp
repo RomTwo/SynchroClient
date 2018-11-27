@@ -13,6 +13,7 @@
 #include <vector>
 #include <dirent.h>//Pour le directory
 #include <sys/stat.h>//Pour le directory
+#include <sstream>
 #include "Profil.hpp"
 using namespace std;
 
@@ -25,6 +26,7 @@ public:
     void editProfil(const string& name);
     void loadProfil(const string& name);
     bool existProfil(const string& name);
+    bool parcourirDirectory(const string& chemin);
 };
 
 #endif /* Client_hpp */
