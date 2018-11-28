@@ -82,3 +82,7 @@ void Profil::loadProfil(){
         this->typeArchivable.push_back(str);
     }
 }
+
+string Profil::getIPDestination(){
+    return this->ipDestination;
+}

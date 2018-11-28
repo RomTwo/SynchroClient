@@ -35,6 +35,7 @@ public:
     void addInformation(const string& iPRemote, const string& sourceRepository, const string& remoteRepository, const vector<string>& extension, const vector<string>& typeArchivable);
     void editProfil(const string& iPSource, const string& iPRemote, const string& sourceRepository, const string& remoteRepository, const vector<string>& extension, const vector<string>& typeArchivable);
     void loadProfil();
+    string getIPDestination();
 };
 
 #endif /* Profil_hpp */

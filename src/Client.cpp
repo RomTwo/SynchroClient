@@ -8,6 +8,9 @@
 #include "Client.hpp"
 #include <iostream>
 #include <string>
+
+#define MYPORT "12345"
+
 using namespace std;
 
 enum Command{
@@ -105,6 +108,9 @@ void Client::loadProfil(const string& name){
         Profil p(name);
         p.loadProfil();
         cout << "Chargement des informations du fichier effectué." << endl;
+        cout << "Connexion au serveur distant" << endl;
+        createConnection(p,"Je me connecte au serveur");
+        cout << "Fin de connexion" << endl;
     }
 }
 
@@ -131,6 +137,59 @@ bool Client::existProfil(const string& name){
     }
     closedir (dir);
     return reponse;
+}
+
+void Client::createConnection(Profil& p, const string& message){
+    struct addrinfo srvr_info;
+    struct addrinfo *srvr_addrs = NULL;
+    int socket_id; /* id de la socket */
+    int numbytes;
+    int n;
+    char buffer[256];
+    string adresse = p.getIPDestination();
+    const char *cstr = adresse.c_str();
+    const char *messageChar = message.c_str();
+    cout << cstr << endl;
+    
+    /* Parametres : TCP (SOCK_STREAM) en IP V4 (AF_INET) */
+    memset(&srvr_info, 0, sizeof(srvr_info));
+    srvr_info.ai_family = AF_INET; /* IPv4 (AF_INET6 pour IPv6) */
+    srvr_info.ai_socktype = SOCK_STREAM; /* TCP */
+    srvr_info.ai_flags = INADDR_ANY; /* Adresse serveur quelconque*/
+    
+    /* Recherche de l'adresse du serveur */
+    int address = getaddrinfo(cstr, MYPORT, &srvr_info, &srvr_addrs);
+    if (address != 0 || srvr_addrs == NULL) {
+        perror("getaddrinfo");
+        exit(EXIT_FAILURE);
+    }
+    /* Création de la Socket */
+    socket_id = socket(srvr_addrs->ai_family, srvr_addrs->ai_socktype, srvr_addrs->ai_protocol);
+    if (socket_id == -1) {
+        perror("socket creation");
+        exit(EXIT_FAILURE);
+    }
+    /* Connexion au serveur */
+    int connected = connect(socket_id, srvr_addrs->ai_addr, sizeof(*(srvr_addrs->ai_addr)));
+    if (connected < 0) {
+        perror("Connection failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    /* Envoi du message (ici, une chaîne de caractères) */
+    numbytes = send(socket_id, messageChar, strlen(messageChar), 0);
+    
+    if (numbytes == -1) {
+        perror("sendto");
+        exit(1);
+    }
+    
+    n = read(socket_id,buffer,255);
+    if (n < 0)
+        perror("ERROR reading from socket");
+    printf("%s\n",buffer);
+    
+    close(socket_id);
 }
 
 bool Client::parcourirDirectory(const string& chemin){
@@ -205,3 +264,4 @@ int main() {
 //    client.parcourirDirectory(chemin);
     return 0;
 }
+

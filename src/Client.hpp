@@ -14,6 +14,12 @@
 #include <dirent.h>//Pour le directory
 #include <sys/stat.h>//Pour le directory
 #include <sstream>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <unistd.h>
+
 #include "Profil.hpp"
 using namespace std;
 
@@ -27,6 +33,7 @@ public:
     void loadProfil(const string& name);
     bool existProfil(const string& name);
     bool parcourirDirectory(const string& chemin);
+    void createConnection(Profil& p, const string& message);
 };
 
 #endif /* Client_hpp */
