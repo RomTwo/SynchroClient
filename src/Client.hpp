@@ -34,6 +34,7 @@ public:
     bool existProfil(const string& name);
     bool parcourirDirectory(const string& chemin);
     void createConnection(Profil& p, const string& message);
+    void sendFile(Profil& p, const string& path);
 };
 
 #endif /* Client_hpp */

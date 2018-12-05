@@ -111,6 +111,8 @@ void Client::loadProfil(const string& name){
         cout << "Connexion au serveur distant" << endl;
         createConnection(p,"Je me connecte au serveur");
         cout << "Fin de connexion" << endl;
+        cout << "COMMANDE SEND" << endl;
+        
     }
 }
 
@@ -175,8 +177,7 @@ void Client::createConnection(Profil& p, const string& message){
         perror("Connection failed");
         exit(EXIT_FAILURE);
     }
-    
-    /* Envoi du message (ici, une chaîne de caractères) */
+
     numbytes = send(socket_id, messageChar, strlen(messageChar), 0);
     
     if (numbytes == -1) {
@@ -190,6 +191,38 @@ void Client::createConnection(Profil& p, const string& message){
     printf("%s\n",buffer);
     
     close(socket_id);
+}
+
+void Client::sendFile(Profil& p, const string& path){
+    std::ifstream is (path, std::ifstream::binary);
+    if (is) {
+        // get length of file:
+        is.seekg (0, is.end);
+        int length = is.tellg();
+        is.seekg (0, is.beg);
+        
+        char * buffer = new char [length];
+        
+        std::cout << "Reading " << length << " characters... " << endl;
+        // read data as a block:
+        is.read (buffer,length);
+        
+        if (is)
+            std::cout << "all characters read successfully." << endl;
+        else
+            std::cout << "error: only " << is.gcount() << " could be read" << endl;
+        is.close();
+        
+        // ...buffer contains the entire file...
+        
+        numbytes = send(socket_id, buffer, length, 0);
+        if (numbytes == -1) {
+            perror("sendto");
+            exit(1);
+        }
+        
+        delete[] buffer;
+    }
 }
 
 bool Client::parcourirDirectory(const string& chemin){
@@ -260,8 +293,6 @@ int main() {
             cout << "Commande non existante" << endl;
         }
     }
-//    string chemin ="/Users/coussmax/Downloads";
-//    client.parcourirDirectory(chemin);
     return 0;
 }
 
