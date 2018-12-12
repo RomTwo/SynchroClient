@@ -207,7 +207,7 @@ void Client::sendFile(Profil& p, const string& path){
         
         // ...buffer contains the entire file...
         
-        send(socket_id, buffer, length, 0);
+        //send(socket_id, buffer, length, 0);
         
         delete[] buffer;
     }
