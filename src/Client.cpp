@@ -1,17 +1,9 @@
-//
-//  Client.cpp
-//  
-//
-//  Created by Maxime Cousseau on 18/11/2018.
-//
-
 #include "Client.hpp"
 #include <iostream>
 #include <string>
 
-#define MYPORT "12345"
-
 using namespace std;
+
 
 enum Command{
     CREATE,
@@ -112,7 +104,7 @@ void Client::loadProfil(const string& name){
         createConnection(p,"Je me connecte au serveur");
         cout << "Fin de connexion" << endl;
         cout << "COMMANDE SEND" << endl;
-        
+        sendFile(p, "noel.png");
     }
 }
 
@@ -178,13 +170,13 @@ void Client::createConnection(Profil& p, const string& message){
         exit(EXIT_FAILURE);
     }
 
-    numbytes = send(socket_id, messageChar, strlen(messageChar), 0);
-    
+    //numbytes = send(socket_id, messageChar, strlen(messageChar), 0);
+    /*
     if (numbytes == -1) {
         perror("sendto");
         exit(1);
     }
-    
+    */
     n = read(socket_id,buffer,255);
     if (n < 0)
         perror("ERROR reading from socket");
@@ -215,11 +207,7 @@ void Client::sendFile(Profil& p, const string& path){
         
         // ...buffer contains the entire file...
         
-        numbytes = send(socket_id, buffer, length, 0);
-        if (numbytes == -1) {
-            perror("sendto");
-            exit(1);
-        }
+        send(socket_id, buffer, length, 0);
         
         delete[] buffer;
     }
@@ -293,6 +281,7 @@ int main() {
             cout << "Commande non existante" << endl;
         }
     }
+    
     return 0;
 }
 
